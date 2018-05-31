@@ -128,7 +128,7 @@ public class AAMainAutoProject extends LinearOpMode {
         jewelDetector.maxDiffrence = 10;
         jewelDetector.ratioWeight = 15;
         jewelDetector.minArea = 700;
-        jewelDetector.rotateMat = true;
+        jewelDetector.rotateMat = false;
         jewelDetector.enable();
 
         jewelextendertime = getRuntime() + 3.5;
@@ -138,8 +138,8 @@ public class AAMainAutoProject extends LinearOpMode {
             if (jewelextenderpos > 0.7) jewelextenderpos = 0.7;
             jewelextender.setPosition(jewelextenderpos);
 
-            telemetry.addData("jewelextender pos", jewelextender.getPosition());
-            telemetry.update();
+            //telemetry.addData("jewelextender pos", jewelextender.getPosition());
+            //telemetry.update();
             sleep(100);
             jewelchooser.setPosition(0.5);
         }
@@ -155,6 +155,7 @@ public class AAMainAutoProject extends LinearOpMode {
             if (jewl == JewelDetector.JewelOrder.RED_BLUE){
                 jewelchooser.setPosition(0.9);
                 telemetry.addData("red", jewelDetector.getCurrentOrder());
+                telemetry.update();
                 sleep(500);
                 loop = false;
                 jewelDetector.disable();
@@ -162,6 +163,7 @@ public class AAMainAutoProject extends LinearOpMode {
             if (jewl == JewelDetector.JewelOrder.BLUE_RED){
                 jewelchooser.setPosition(0.1);
                 telemetry.addData("blue", jewelDetector.getCurrentOrder());
+                telemetry.update();
                 sleep(500);
                 loop = false;
                 jewelDetector.disable();
@@ -842,8 +844,9 @@ public class AAMainAutoProject extends LinearOpMode {
          * */
         //Initialisation();
         waitForStart();
-        //Jewels();
+        Jewels();
 
+        /*
         boolean bakjebovenpos = false;
         boolean bakjedichtpos = false;
         boolean timeforbakbool1 = false;
@@ -858,6 +861,7 @@ public class AAMainAutoProject extends LinearOpMode {
 
         intakeL.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeR.setDirection(DcMotorSimple.Direction.FORWARD);
+        */
 
         /*red:
         bakjedicht.setPosition(0.25);
@@ -873,7 +877,7 @@ public class AAMainAutoProject extends LinearOpMode {
         Forward(3, .2);
           */
 
-        //blue
+        /*blue:
         bakjedicht.setPosition(0.25);
         Forward(20, .3);
         StrafeLeft(20, 0.3);
@@ -906,6 +910,7 @@ public class AAMainAutoProject extends LinearOpMode {
         Reverse(6, 0.2);
         Forward(4, .2);
         bakjeturn.setPosition(.7);
+        */
 
 
 

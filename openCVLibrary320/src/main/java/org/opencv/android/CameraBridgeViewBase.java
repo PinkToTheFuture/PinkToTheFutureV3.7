@@ -74,7 +74,13 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         if (styledAttrs.getBoolean(R.styleable.CameraBridgeViewBase_show_fps, false))
             enableFpsMeter();
 
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         mCameraIndex = styledAttrs.getInt(R.styleable.CameraBridgeViewBase_camera_id, 98);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
         getHolder().addCallback(this);
         mMaxWidth = MAX_UNSPECIFIED;
@@ -408,6 +414,7 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
 
         if (bmpValid && mCacheBitmap != null) {
             Canvas canvas = getHolder().lockCanvas();
+            canvas.rotate(90f, canvas.getWidth()/2, canvas.getHeight()/2);
             if (canvas != null) {
                 canvas.drawColor(0, android.graphics.PorterDuff.Mode.CLEAR);
                 if (BuildConfig.DEBUG)

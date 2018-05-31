@@ -71,7 +71,9 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
         boolean result = true;
         synchronized (this) {
             mCamera = null;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             mCameraIndex = CAMERA_ID_FRONT;
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             if (mCameraIndex == CAMERA_ID_ANY) {
                 Log.d(TAG, "Trying to open camera with old open()");
                 try {
