@@ -144,6 +144,12 @@ public class AAMainAutoProject extends LinearOpMode {
             jewelchooser.setPosition(0.5);
         }
 
+        /**
+        CameraBridgeViewBase -> deliverAndDrawFrame (rotate view)
+        CameraBridgeViewBase -> front/rear
+        CameraGLRenderBase -> front/rear
+        JavaCameraView -> front/rear
+        */
 
         boolean loop = true;
         while (opModeIsActive()&&loop) {
@@ -192,8 +198,6 @@ public class AAMainAutoProject extends LinearOpMode {
                     //StrafeRight(x, .3);
                     StrafeRight(3, .3);
                 }
-
-
         }
     }
 
@@ -842,11 +846,10 @@ public class AAMainAutoProject extends LinearOpMode {
         /**
          * Change voids depending on alliance and starting position:
          * */
+
         //Initialisation();
         waitForStart();
-        Jewels();
 
-        /*
         boolean bakjebovenpos = false;
         boolean bakjedichtpos = false;
         boolean timeforbakbool1 = false;
@@ -861,10 +864,11 @@ public class AAMainAutoProject extends LinearOpMode {
 
         intakeL.setDirection(DcMotorSimple.Direction.REVERSE);
         intakeR.setDirection(DcMotorSimple.Direction.FORWARD);
-        */
 
-        /*red:
+
+        //red upper:
         bakjedicht.setPosition(0.25);
+        Jewels();
         Forward(20, .3);
         StrafeRight(20, 0.3);
         Reverse(15, .3);
@@ -875,9 +879,31 @@ public class AAMainAutoProject extends LinearOpMode {
         sleep(1000);
         Reverse(4, 0.2);
         Forward(3, .2);
-          */
+        //2nd run
+        StrafeRight(20, .3);
+        bakjeturn.setPosition(.7);
+        sleep(1000);
+        TurnRight(4, .3);
+        intakeL.setPower(.9);
+        intakeR.setPower(.9);
+        Forward(25, .2);
+        Reverse(30, .2);
+        intakeL.setPower(0);
+        intakeR.setPower(0);
+        bakjedicht.setPosition(.25);
+        sleep(1000);
+        StrafeLeft(10, .3);
+        bakjeturn.setPosition(0.2);
+        sleep(1000);
+        bakjedicht.setPosition(0.1);
+        sleep(1000);
+        Reverse(6, 0.2);
+        Forward(4, .2);
+        bakjeturn.setPosition(.7);
 
-        /*blue:
+
+
+        /*blue upper:
         bakjedicht.setPosition(0.25);
         Forward(20, .3);
         StrafeLeft(20, 0.3);
@@ -889,7 +915,7 @@ public class AAMainAutoProject extends LinearOpMode {
         sleep(1000);
         Reverse(6, 0.2);
         Forward(3, .2);
-
+        //2nd run
         StrafeLeft(20, .3);
         bakjeturn.setPosition(.7);
         sleep(1000);
