@@ -147,52 +147,47 @@ public class AAMainAutoProject extends LinearOpMode {
             telemetry.addData("Last Order", "Jewel Order: " + jewelDetector.getLastOrder().toString()); // Last Known Result */
             waitOneFullHardwareCycle();
             JewelDetector.JewelOrder jewl = jewelDetector.getCurrentOrder();
-            jewelextenderdown = true;
-
-            if (jewelextenderdown == true) {
-                jewelextendertimedown = getRuntime() + 3.5;
-            } else jewelextenderdown = false;
-            if (jewelextenderback == true) {
-                jewelextendertimeback = getRuntime() + 3.5;
-            } else jewelextenderback = false;
-
-           if (jewelextendertimedown>= getRuntime()) {
-               jewelextenderpos = jewelextenderpos - 0.03;
-           }
-           if (jewelextendertimeback>= getRuntime()) {
-               jewelextenderpos = jewelextenderpos + .03;
-           }
-           if (jewelextenderpos < 0.1) jewelextenderpos = 0.1;
-           if (jewelextenderpos > 0.7) jewelextenderpos = 0.7;
-           jewelextender.setPosition(jewelextenderpos);
 
 
            if (jewl == JewelDetector.JewelOrder.RED_BLUE){
+                jewelextenderdown = true;
                 jewelchooser.setPosition(0.1);
-                sleep(500);
+                sleep(1000);
                 telemetry.addData("DETECTED: ", jewelDetector.getCurrentOrder());
                 telemetry.addData("jewelextender pos", jewelextender.getPosition());
                 telemetry.update();
                 jewelchooser.setPosition(0.45);
-                sleep(500);
-                loop = false;
+                sleep(1000);
                 jewelDetector.disable();
                 jewelextenderback = true;
-
-            }
-            if (jewl == JewelDetector.JewelOrder.BLUE_RED){
+                loop = false;
+           }
+           if (jewl == JewelDetector.JewelOrder.BLUE_RED){
+                jewelextenderdown = true;
                 jewelchooser.setPosition(0.7);
-                sleep(500);
+                sleep(1000);
                 telemetry.addData("DETECTED: ", jewelDetector.getCurrentOrder());
                 telemetry.addData("jewelextender pos", jewelextender.getPosition());
                 telemetry.update();
                 jewelchooser.setPosition(0.45);
-                sleep(500);
-                loop = false;
+                sleep(1000);
                 jewelDetector.disable();
                 jewelextenderback = true;
+                loop = false;
+           }
 
+
+
+            if (jewelextendertimedown>= getRuntime()&&jewelextenderdown) {
+                jewelextenderpos = jewelextenderpos - 0.03;
             }
+            if (jewelextendertimeback>= getRuntime()&&jewelextenderback) {
+                jewelextenderpos = jewelextenderpos + .03;
+            }
+            if (jewelextenderpos < 0.1) jewelextenderpos = 0.1;
+            if (jewelextenderpos > 0.7) jewelextenderpos = 0.7;
+            jewelextender.setPosition(jewelextenderpos);
+
         }
 
     }
@@ -224,7 +219,7 @@ public class AAMainAutoProject extends LinearOpMode {
         double RBpower = 0;
         double speed = 1;
         double relicpos = 0.6;
-        double relicanglepos = 0.5;
+        double relicanglepos = 0;
         double timeforbak1 = 0;
         double timeforbak2 = 0;
         double jewelextendertimeheen = 0;
@@ -238,8 +233,13 @@ public class AAMainAutoProject extends LinearOpMode {
         boolean timeforbakbool2 = false;
         boolean endbottombakbool;
         boolean endtopbakbool;
+        double timeforpushers1 = 0;
+        double timeforpushers2 = 0;
+        boolean gePushed = true;
+        boolean pushers1 = false;
+        boolean pushers2 = false;
 
-
+        //
         DigitalChannel endbottombak = hardwareMap.get(DigitalChannel.class, "endbottombak");
         DigitalChannel endtopbak = hardwareMap.get(DigitalChannel.class, "endtopbak");
         endbottombak.setMode(DigitalChannel.Mode.INPUT);
@@ -254,6 +254,9 @@ public class AAMainAutoProject extends LinearOpMode {
         filamentmanipulator.setPosition(1);
         Servo jewelextender = hardwareMap.servo.get("jewelextender");
         Servo jewelchooser = hardwareMap.servo.get("jewelchooser");
+        Servo glyphpushl = hardwareMap.servo.get("glyphpushl");
+        Servo glyphpushr = hardwareMap.servo.get("glyphpushr");
+
 
         DcMotor intakeR = hardwareMap.dcMotor.get("intaker");
         DcMotor intakeL = hardwareMap.dcMotor.get("intakel");
@@ -273,6 +276,9 @@ public class AAMainAutoProject extends LinearOpMode {
 
         RFdrive.setDirection(DcMotorSimple.Direction.REVERSE);
         RBdrive.setDirection(DcMotorSimple.Direction.REVERSE);
+
+        intakeL.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeR.setDirection(DcMotorSimple.Direction.REVERSE);
 
         RFdrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         RBdrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -300,9 +306,9 @@ public class AAMainAutoProject extends LinearOpMode {
 
             double theta = imu.getAngles()[0];
 
-            double forward = -gamepad1.left_stick_y;
-            double strafe = gamepad1.left_stick_x;
-            double rcw = -gamepad1.right_stick_x;
+            double forward = gamepad1.left_stick_y;
+            double strafe = -gamepad1.left_stick_x;
+            double rcw = gamepad1.right_stick_x;
 
             if (Math.abs(gamepad1.left_stick_x) > 0 || Math.abs(gamepad1.left_stick_y) > 0 || Math.abs(gamepad1.right_stick_x) > 0 || Math.abs(gamepad1.right_stick_y) > 0 ){
                 imuArray[0] = theta;
@@ -330,10 +336,10 @@ public class AAMainAutoProject extends LinearOpMode {
             Range.clip(LFpower, -1, 1);
             Range.clip(LBpower, -1, 1);
 
-            LFdrive.setPower(-LFpower * speed);
-            RBdrive.setPower(-RBpower * speed);
-            LBdrive.setPower(-LBpower * speed);
-            RFdrive.setPower(-RFpower * speed);
+            LFdrive.setPower(LFpower * speed);
+            RBdrive.setPower(RBpower * speed);
+            LBdrive.setPower(LBpower * speed);
+            RFdrive.setPower(RFpower * speed);
 
             if (gamepad1.left_bumper) {
                 double Kp1 = 2;
@@ -408,12 +414,12 @@ public class AAMainAutoProject extends LinearOpMode {
                 jewelextenderpos = jewelextenderpos + 0.03;
             } else { jewelextenderbuttonheen = false; }
             if (jewelextenderpos < 0.1) jewelextenderpos = 0.1;
-            if (jewelextenderpos > 0.65) jewelextenderpos = 0.65;
+            if (jewelextenderpos > 0.7) jewelextenderpos = 0.7;
             jewelextender.setPosition(jewelextenderpos);
 
 
             if (gamepad1.a && gamepad1.right_bumper && !gamepad1.start) {
-                jewelchooser.setPosition(0.3);
+                jewelchooser.setPosition(0.25);
             } else {
                 if (gamepad1.b && gamepad1.right_bumper && !gamepad1.start){
                     jewelchooser.setPosition(0.7);
@@ -423,23 +429,41 @@ public class AAMainAutoProject extends LinearOpMode {
 
             }
             if (gamepad2.right_bumper && !(gamepad2.right_trigger>0.1))  grabrelic.setPosition(0.13);
-            if (gamepad2.left_bumper)   grabrelic.setPosition(0.7);
+            if (gamepad2.left_bumper)   grabrelic.setPosition(0.73);
 
 
-            if (gamepad2.dpad_up)  relicpos += 0.01;
-            if (gamepad2.dpad_down)  relicpos -= 0.01;
+            if (gamepad2.dpad_up)  relicpos = 0.9;
+            if (gamepad2.dpad_down)  relicpos =.3;
             if (gamepad2.dpad_right) relicpos = 0.6;
             moverelic.setPosition(relicpos);
 
 
 
             if (gamepad2.b && !gamepad2.start && !timeforbakbool1 && !timeforbakbool2) {
-                timeforbak1 = getRuntime() + 0.2;
-                timeforbak2 = getRuntime() + 0.7;
-                bakjedicht.setPosition(0.25);
+
+                if (gePushed == true){
+                    timeforbak1 = getRuntime() + 1.6;
+                    timeforbak2 = getRuntime() + 2.1;
+                }else{
+                    timeforbak1 = getRuntime() + 0.2;
+                    timeforbak2 = getRuntime() + 0.7;
+                }
+
+
+                timeforpushers1 = getRuntime() + .1;
+                timeforpushers2 = getRuntime() + .9;
+                pushers1 = true;
+
                 bakjedichtpos = true;
                 timeforbakbool1 = true;
-                timeforbakbool2 = true;
+
+                if (gePushed == false){
+                    bakjedicht.setPosition(0.35);
+                    gePushed = true;
+                }else{
+                    gePushed = false;
+                }
+
 
             }
             telemetry.addData("boven:", bakjeturn.getPosition());
@@ -447,9 +471,13 @@ public class AAMainAutoProject extends LinearOpMode {
             telemetry.addData("dicht:", bakjedicht.getPosition());
             telemetry.addData("dicht:", bakjedichtpos);
 
+
+
+
             if (timeforbak1<getRuntime() && timeforbakbool1){
                 timeforbakbool1 = false;
                 if (!bakjebovenpos) {
+                    bakjedicht.setPosition(0.35);
                     bakjeturn.setPosition(0.2);
                     bakjebovenpos = true;
                 } else {
@@ -457,6 +485,22 @@ public class AAMainAutoProject extends LinearOpMode {
                     bakjebovenpos = false;
                 }
                 timeforbakbool2 = true;
+
+            }
+            if (timeforpushers1<getRuntime() && pushers1 && gePushed == false) {
+                //open
+                glyphpushl.setPosition(0.9);
+                glyphpushr.setPosition(0.1);
+                pushers1 = false;
+                pushers2 = true;
+
+            }
+            if (timeforpushers2<getRuntime() && pushers2) {
+                //dicht
+                glyphpushl.setPosition(0.1);
+                glyphpushr.setPosition(0.9);
+                timeforbakbool2 = true;
+                pushers2 = false;
             }
             if (timeforbak2<getRuntime() && timeforbakbool2){
                 timeforbakbool2 = false;
@@ -471,51 +515,48 @@ public class AAMainAutoProject extends LinearOpMode {
                 bakjedichtpos = false;
             }
             if (gamepad2.a && !gamepad2.start) {
+
                 bakjedicht.setPosition(0.1);
                 bakjedichtpos = false;
             }
 
-            relicanglepos = relicanglepos + gamepad2.left_stick_x/30;
-            if (relicanglepos > 0.8){
-                relicanglepos = 0.8;
+            relicanglepos = relicanglepos + gamepad2.right_stick_x/3;
+            if (relicanglepos > 0.5){
+                relicanglepos = 0.5;
             }
-            if (relicanglepos < 0.2){
-                relicanglepos = 0.2;
+            if (relicanglepos < 0){
+                relicanglepos = 0;
             }
             anglefishingrod.setPosition(relicanglepos);
 
-            if ((gamepad2.right_trigger > 0.1) && gamepad2.right_bumper){
-                intakeL.setDirection(DcMotorSimple.Direction.FORWARD);
-                intakeR.setDirection(DcMotorSimple.Direction.REVERSE);
-            } else {
-                intakeL.setDirection(DcMotorSimple.Direction.FORWARD);
-                intakeR.setDirection(DcMotorSimple.Direction.FORWARD);
-            }
-            if (gamepad2.right_trigger > 0.1) {
-                intakeL.setPower(-gamepad2.right_trigger);
-                intakeR.setPower(gamepad2.right_trigger);
+
+            if (gamepad2.left_trigger > 0.1) {
+                intakeL.setPower(gamepad2.left_trigger);
+                intakeR.setPower(gamepad2.left_trigger);
 
             } else {
-                if (gamepad2.left_trigger > 0.1) {
-                    intakeL.setPower(gamepad2.left_trigger);
-                    intakeR.setPower(-gamepad2.left_trigger);
+                if (gamepad2.right_trigger > 0.1) {
+                    intakeL.setPower(-gamepad2.right_trigger);
+                    intakeR.setPower(-gamepad2.right_trigger);
                 } else {
                     intakeR.setPower(0);
                     intakeL.setPower(0);
                 }
             }
 
+
+
             endbottombakbool = endbottombak.getState();
             endtopbakbool = endtopbak.getState();
 
             if (endbottombakbool && endtopbakbool){
-                bak.setPower(-gamepad2.right_stick_y);
+                bak.setPower(-gamepad2.left_stick_y);
             } else {
                 if (!endbottombakbool && endtopbakbool) bak.setPower(0.4);
                 if (endbottombakbool && !endtopbakbool) bak.setPower(-0.4);
                 if (!endbottombakbool && !endtopbakbool) bak.setPower(0);
             }
-            relic.setPower(gamepad2.left_stick_y);
+            relic.setPower(gamepad2.right_stick_y);
 
             telemetry.addData("endstopbottom", endbottombak.getState());
             telemetry.addData("endstoptop", endtopbak.getState());
@@ -525,7 +566,10 @@ public class AAMainAutoProject extends LinearOpMode {
             telemetry.addData("RB",RBpower);
             telemetry.addData("RF",RFpower);
             telemetry.addData("relic extruder", relic.getCurrentPosition());
+            telemetry.addData("gepushed: ",gePushed);
+            telemetry.addData("bakjebovenpos ",bakjebovenpos);
             telemetry.update();
+
 
         }
     }
@@ -919,7 +963,7 @@ public class AAMainAutoProject extends LinearOpMode {
 
 
         //red upper:
-        bakjedicht.setPosition(0.25);
+        bakjedicht.setPosition(0.35);
         Jewels();
         Forward(22, .4);
         StrafeRight(21, 0.6);
@@ -932,7 +976,7 @@ public class AAMainAutoProject extends LinearOpMode {
         Reverse(5, .3);
         Forward(7, .3);
         //2nd run
-        bakjedicht.setPosition(0.25);
+        bakjedicht.setPosition(0.35);
         sleep(750);
         bakjeturn.setPosition(.7);
         sleep(750);
@@ -946,7 +990,7 @@ public class AAMainAutoProject extends LinearOpMode {
         Reverse(40, .6);
         intakeL.setPower(0);
         intakeR.setPower(0);
-        bakjedicht.setPosition(.25);
+        bakjedicht.setPosition(.35);
         sleep(1000);
         StrafeLeft(20, .5);
         TurnRight(3, .3);

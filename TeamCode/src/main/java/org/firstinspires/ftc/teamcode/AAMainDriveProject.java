@@ -222,7 +222,6 @@ public class AAMainDriveProject extends LinearOpMode {
             if (jewelextenderpos > 0.7) jewelextenderpos = 0.7;
             jewelextender.setPosition(jewelextenderpos);
 
-
             if (gamepad1.a && gamepad1.right_bumper && !gamepad1.start) {
                 jewelchooser.setPosition(0.25);
             } else {
@@ -233,16 +232,14 @@ public class AAMainDriveProject extends LinearOpMode {
                 }
 
             }
+
             if (gamepad2.right_bumper && !(gamepad2.right_trigger>0.1))  grabrelic.setPosition(0.13);
             if (gamepad2.left_bumper)   grabrelic.setPosition(0.73);
-
 
             if (gamepad2.dpad_up)  relicpos = 0.9;
             if (gamepad2.dpad_down)  relicpos =.3;
             if (gamepad2.dpad_right) relicpos = 0.6;
             moverelic.setPosition(relicpos);
-
-
 
             if (gamepad2.b && !gamepad2.start && !timeforbakbool1 && !timeforbakbool2) {
 
@@ -253,7 +250,6 @@ public class AAMainDriveProject extends LinearOpMode {
                     timeforbak1 = getRuntime() + 0.2;
                     timeforbak2 = getRuntime() + 0.7;
                 }
-
 
                 timeforpushers1 = getRuntime() + .1;
                 timeforpushers2 = getRuntime() + .9;
@@ -268,15 +264,12 @@ public class AAMainDriveProject extends LinearOpMode {
                 }else{
                     gePushed = false;
                 }
-
-
             }
+
             telemetry.addData("boven:", bakjeturn.getPosition());
             telemetry.addData("boven:", bakjebovenpos);
             telemetry.addData("dicht:", bakjedicht.getPosition());
             telemetry.addData("dicht:", bakjedichtpos);
-
-
 
 
             if (timeforbak1<getRuntime() && timeforbakbool1){
@@ -349,8 +342,6 @@ public class AAMainDriveProject extends LinearOpMode {
                 }
             }
 
-
-
             endbottombakbool = endbottombak.getState();
             endtopbakbool = endtopbak.getState();
 
@@ -371,8 +362,6 @@ public class AAMainDriveProject extends LinearOpMode {
             telemetry.addData("RB",RBpower);
             telemetry.addData("RF",RFpower);
             telemetry.addData("relic extruder", relic.getCurrentPosition());
-            telemetry.addData("gepushed: ",gePushed);
-            telemetry.addData("bakjebovenpos ",bakjebovenpos);
             telemetry.update();
 
 
