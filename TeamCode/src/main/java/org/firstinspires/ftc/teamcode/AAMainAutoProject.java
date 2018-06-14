@@ -112,8 +112,10 @@ public class AAMainAutoProject extends LinearOpMode {
         Servo jewelchooser = hardwareMap.servo.get("jewelchooser");
 
         double jewelextenderpos = 0;
-        double jewelextendertime = 0;
-        boolean loopjewel = true;
+        double jewelextendertimedown = 0;
+        double jewelextendertimeback = 0;
+        boolean jewelextenderdown = false;
+        boolean jewelextenderback = false;
 
 
         jewelDetector = new JewelDetector();
@@ -131,18 +133,6 @@ public class AAMainAutoProject extends LinearOpMode {
         jewelDetector.rotateMat = false;
         jewelDetector.enable();
 
-        jewelextendertime = getRuntime() + 3.5;
-        while (jewelextendertime > getRuntime() && opModeIsActive()) {
-            jewelextenderpos = jewelextenderpos + 0.03;
-            if (jewelextenderpos < 0.1) jewelextenderpos = 0.1;
-            if (jewelextenderpos > 0.7) jewelextenderpos = 0.7;
-            jewelextender.setPosition(jewelextenderpos);
-
-            //telemetry.addData("jewelextender pos", jewelextender.getPosition());
-            //telemetry.update();
-            sleep(100);
-            jewelchooser.setPosition(0.5);
-        }
 
         /**
         CameraBridgeViewBase -> deliverAndDrawFrame (rotate view)
@@ -157,27 +147,53 @@ public class AAMainAutoProject extends LinearOpMode {
             telemetry.addData("Last Order", "Jewel Order: " + jewelDetector.getLastOrder().toString()); // Last Known Result */
             waitOneFullHardwareCycle();
             JewelDetector.JewelOrder jewl = jewelDetector.getCurrentOrder();
+            jewelextenderdown = true;
 
-            if (jewl == JewelDetector.JewelOrder.RED_BLUE){
-                jewelchooser.setPosition(0.9);
-                telemetry.addData("red", jewelDetector.getCurrentOrder());
+            if (jewelextenderdown == true) {
+                jewelextendertimedown = getRuntime() + 3.5;
+            } else jewelextenderdown = false;
+            if (jewelextenderback == true) {
+                jewelextendertimeback = getRuntime() + 3.5;
+            } else jewelextenderback = false;
+
+           if (jewelextendertimedown>= getRuntime()) {
+               jewelextenderpos = jewelextenderpos - 0.03;
+           }
+           if (jewelextendertimeback>= getRuntime()) {
+               jewelextenderpos = jewelextenderpos + .03;
+           }
+           if (jewelextenderpos < 0.1) jewelextenderpos = 0.1;
+           if (jewelextenderpos > 0.7) jewelextenderpos = 0.7;
+           jewelextender.setPosition(jewelextenderpos);
+
+
+           if (jewl == JewelDetector.JewelOrder.RED_BLUE){
+                jewelchooser.setPosition(0.1);
+                sleep(500);
+                telemetry.addData("DETECTED: ", jewelDetector.getCurrentOrder());
+                telemetry.addData("jewelextender pos", jewelextender.getPosition());
                 telemetry.update();
+                jewelchooser.setPosition(0.45);
                 sleep(500);
                 loop = false;
                 jewelDetector.disable();
+                jewelextenderback = true;
+
             }
             if (jewl == JewelDetector.JewelOrder.BLUE_RED){
-                jewelchooser.setPosition(0.1);
-                telemetry.addData("blue", jewelDetector.getCurrentOrder());
+                jewelchooser.setPosition(0.7);
+                sleep(500);
+                telemetry.addData("DETECTED: ", jewelDetector.getCurrentOrder());
+                telemetry.addData("jewelextender pos", jewelextender.getPosition());
                 telemetry.update();
+                jewelchooser.setPosition(0.45);
                 sleep(500);
                 loop = false;
                 jewelDetector.disable();
+                jewelextenderback = true;
+
             }
         }
-            jewelextender.setPosition(0);
-            sleep(3000);
-            telemetry.update();
 
     }
 
@@ -687,8 +703,8 @@ public class AAMainAutoProject extends LinearOpMode {
         DcMotor RBdrive = hardwareMap.dcMotor.get("RBdrive");
         DcMotor LBdrive = hardwareMap.dcMotor.get("LBdrive");
         DcMotor RFdrive = hardwareMap.dcMotor.get("RFdrive");
-        LFdrive.setDirection(DcMotorSimple.Direction.FORWARD);
-        LBdrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        LFdrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        LBdrive.setDirection(DcMotorSimple.Direction.FORWARD);
         RFdrive.setDirection(DcMotorSimple.Direction.FORWARD);
         RBdrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -841,6 +857,42 @@ public class AAMainAutoProject extends LinearOpMode {
         RBdrive.setPower(0);
     }
 
+    public void Shake(double rot ) throws InterruptedException {
+        boolean loop = true;
+        int encv = ((int) Math.round(rot*53.75));
+        DcMotor LFdrive = hardwareMap.dcMotor.get("LFdrive");
+        DcMotor RBdrive = hardwareMap.dcMotor.get("RBdrive");
+        DcMotor LBdrive = hardwareMap.dcMotor.get("LBdrive");
+        DcMotor RFdrive = hardwareMap.dcMotor.get("RFdrive");
+        LFdrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        LBdrive.setDirection(DcMotorSimple.Direction.REVERSE);
+        RFdrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        RBdrive.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        LFdrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LBdrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RFdrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        RBdrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        idle();
+
+        LFdrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        LBdrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RFdrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        RBdrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (loop && opModeIsActive()){
+
+
+
+        }
+        LFdrive.setPower(0);
+        LBdrive.setPower(0);
+        RFdrive.setPower(0);
+        RBdrive.setPower(0);
+    }
+
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         /**
@@ -862,44 +914,50 @@ public class AAMainAutoProject extends LinearOpMode {
         DcMotor intakeR = hardwareMap.dcMotor.get("intaker");
         DcMotor intakeL = hardwareMap.dcMotor.get("intakel");
 
-        intakeL.setDirection(DcMotorSimple.Direction.REVERSE);
-        intakeR.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeL.setDirection(DcMotorSimple.Direction.FORWARD);
+        intakeR.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         //red upper:
         bakjedicht.setPosition(0.25);
         Jewels();
-        Forward(20, .3);
-        StrafeRight(20, 0.3);
-        Reverse(15, .3);
-        TurnLeft(19, .3);
+        Forward(22, .4);
+        StrafeRight(21, 0.6);
+        Reverse(7, .6);
+        TurnLeft(10, .3);
         bakjeturn.setPosition(0.2);
         sleep(1000);
         bakjedicht.setPosition(0.1);
         sleep(1000);
-        Reverse(4, 0.2);
-        Forward(3, .2);
+        Reverse(5, .3);
+        Forward(7, .3);
         //2nd run
-        StrafeRight(20, .3);
+        bakjedicht.setPosition(0.25);
+        sleep(750);
         bakjeturn.setPosition(.7);
-        sleep(1000);
-        TurnRight(4, .3);
+        sleep(750);
+        bakjedicht.setPosition(.1);
+        sleep(750);
+
         intakeL.setPower(.9);
         intakeR.setPower(.9);
-        Forward(25, .2);
-        Reverse(30, .2);
+        Forward(20, .6);
+        Forward(20, .2);
+        Reverse(40, .6);
         intakeL.setPower(0);
         intakeR.setPower(0);
         bakjedicht.setPosition(.25);
         sleep(1000);
-        StrafeLeft(10, .3);
+        StrafeLeft(20, .5);
+        TurnRight(3, .3);
         bakjeturn.setPosition(0.2);
-        sleep(1000);
+        sleep(750);
         bakjedicht.setPosition(0.1);
-        sleep(1000);
-        Reverse(6, 0.2);
+        sleep(750);
+        Reverse(6, .2);
         Forward(4, .2);
         bakjeturn.setPosition(.7);
+        sleep(1000);
 
 
 
