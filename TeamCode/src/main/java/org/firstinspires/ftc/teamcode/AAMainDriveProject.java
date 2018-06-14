@@ -213,7 +213,7 @@ public class AAMainDriveProject extends LinearOpMode {
 
 
             if (gamepad1.a && gamepad1.right_bumper && !gamepad1.start) {
-                jewelchooser.setPosition(0.3);
+                jewelchooser.setPosition(0.1);
             } else {
                 if (gamepad1.b && gamepad1.right_bumper && !gamepad1.start){
                     jewelchooser.setPosition(0.7);

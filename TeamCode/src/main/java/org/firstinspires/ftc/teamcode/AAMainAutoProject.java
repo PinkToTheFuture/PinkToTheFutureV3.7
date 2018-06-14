@@ -171,7 +171,7 @@ public class AAMainAutoProject extends LinearOpMode {
         }
             jewelextender.setPosition(0);
             sleep(3000);
-            telemetry.update();
+
 
     }
 
