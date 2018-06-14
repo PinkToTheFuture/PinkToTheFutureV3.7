@@ -100,9 +100,9 @@ public class AAMainDriveProject extends LinearOpMode {
 
             double theta = imu.getAngles()[0];
 
-            double forward = -gamepad1.left_stick_y;
+            double forward = gamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x;
-            double rcw = -gamepad1.right_stick_x;
+            double rcw = gamepad1.right_stick_x;
 
             if (Math.abs(gamepad1.left_stick_x) > 0 || Math.abs(gamepad1.left_stick_y) > 0 || Math.abs(gamepad1.right_stick_x) > 0 || Math.abs(gamepad1.right_stick_y) > 0 ){
                 imuArray[0] = theta;
@@ -130,10 +130,10 @@ public class AAMainDriveProject extends LinearOpMode {
             Range.clip(LFpower, -1, 1);
             Range.clip(LBpower, -1, 1);
 
-            LFdrive.setPower(-LFpower * speed);
-            RBdrive.setPower(-RBpower * speed);
-            LBdrive.setPower(-LBpower * speed);
-            RFdrive.setPower(-RFpower * speed);
+            LFdrive.setPower(LFpower * speed);
+            RBdrive.setPower(RBpower * speed);
+            LBdrive.setPower(LBpower * speed);
+            RFdrive.setPower(RFpower * speed);
 
             if (gamepad1.left_bumper) {
                 double Kp1 = 2;
