@@ -120,7 +120,7 @@ public class AAMainAutoProject extends LinearOpMode {
 
         jewelDetector = new JewelDetector();
         jewelDetector.init(hardwareMap.appContext, CameraViewDisplay.getInstance());
-
+        //
         //Jewel Detector Settings
         jewelDetector.areaWeight = 0.05;
         jewelDetector.downScaleFactor = 1;
