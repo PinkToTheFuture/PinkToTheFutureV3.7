@@ -111,11 +111,7 @@ public class AAMainAutoProject extends LinearOpMode {
         Servo jewelextender = hardwareMap.servo.get("jewelextender");
         Servo jewelchooser = hardwareMap.servo.get("jewelchooser");
 
-        double jewelextenderpos = 0;
-        double jewelextendertimedown = 0;
-        double jewelextendertimeback = 0;
-        boolean jewelextenderdown = false;
-        boolean jewelextenderback = false;
+
 
 
         jewelDetector = new JewelDetector();
@@ -141,6 +137,7 @@ public class AAMainAutoProject extends LinearOpMode {
         JavaCameraView -> front/rear
         */
 
+
         boolean loop = true;
         while (opModeIsActive()&&loop) {
             /*telemetry.addData("Current Order", "Jewel Order: " + jewelDetector.getCurrentOrder().toString()); // Current Result
@@ -148,45 +145,60 @@ public class AAMainAutoProject extends LinearOpMode {
             waitOneFullHardwareCycle();
             JewelDetector.JewelOrder jewl = jewelDetector.getCurrentOrder();
 
-
            if (jewl == JewelDetector.JewelOrder.RED_BLUE){
-                jewelextenderdown = true;
-                jewelchooser.setPosition(0.1);
-                sleep(1000);
-                telemetry.addData("DETECTED: ", jewelDetector.getCurrentOrder());
-                telemetry.addData("jewelextender pos", jewelextender.getPosition());
-                telemetry.update();
-                jewelchooser.setPosition(0.45);
-                sleep(1000);
-                jewelDetector.disable();
-                jewelextenderback = true;
-                loop = false;
+               jewelextender.setPosition(0.4);
+               sleep(100);
+               jewelextender.setPosition(0.5);
+               sleep(100);
+               jewelextender.setPosition(0.6);
+               sleep(100);
+               jewelextender.setPosition(0.7);
+               sleep(100);
+               jewelchooser.setPosition(0.1);
+               sleep(800);
+               jewelchooser.setPosition(0.45);
+               sleep(800);
+               jewelextender.setPosition(0.7);
+               sleep(100);
+               jewelextender.setPosition(0.5);
+               sleep(100);
+               jewelextender.setPosition(0.3);
+               sleep(100);
+               jewelextender.setPosition(0.1);
+               sleep(100);
+               telemetry.addData("DETECTED: ", jewelDetector.getCurrentOrder());
+               telemetry.addData("jewelextender pos", jewelextender.getPosition());
+               telemetry.update();
+               jewelDetector.disable();
+               loop = false;
            }
            if (jewl == JewelDetector.JewelOrder.BLUE_RED){
-                jewelextenderdown = true;
-                jewelchooser.setPosition(0.7);
-                sleep(1000);
-                telemetry.addData("DETECTED: ", jewelDetector.getCurrentOrder());
-                telemetry.addData("jewelextender pos", jewelextender.getPosition());
-                telemetry.update();
-                jewelchooser.setPosition(0.45);
-                sleep(1000);
-                jewelDetector.disable();
-                jewelextenderback = true;
-                loop = false;
+               jewelextender.setPosition(0.4);
+               sleep(100);
+               jewelextender.setPosition(0.5);
+               sleep(100);
+               jewelextender.setPosition(0.6);
+               sleep(100);
+               jewelextender.setPosition(0.7);
+               sleep(100);
+               jewelchooser.setPosition(0.7);
+               sleep(800);
+               jewelchooser.setPosition(0.45);
+               sleep(800);
+               jewelextender.setPosition(0.7);
+               sleep(100);
+               jewelextender.setPosition(0.5);
+               sleep(100);
+               jewelextender.setPosition(0.3);
+               sleep(100);
+               jewelextender.setPosition(0.1);
+               sleep(100);
+               telemetry.addData("DETECTED: ", jewelDetector.getCurrentOrder());
+               telemetry.addData("jewelextender pos", jewelextender.getPosition());
+               telemetry.update();
+               jewelDetector.disable();
+               loop = false;
            }
-
-
-
-            if (jewelextendertimedown>= getRuntime()&&jewelextenderdown) {
-                jewelextenderpos = jewelextenderpos - 0.03;
-            }
-            if (jewelextendertimeback>= getRuntime()&&jewelextenderback) {
-                jewelextenderpos = jewelextenderpos + .03;
-            }
-            if (jewelextenderpos < 0.1) jewelextenderpos = 0.1;
-            if (jewelextenderpos > 0.7) jewelextenderpos = 0.7;
-            jewelextender.setPosition(jewelextenderpos);
 
         }
 
@@ -747,8 +759,8 @@ public class AAMainAutoProject extends LinearOpMode {
         DcMotor RBdrive = hardwareMap.dcMotor.get("RBdrive");
         DcMotor LBdrive = hardwareMap.dcMotor.get("LBdrive");
         DcMotor RFdrive = hardwareMap.dcMotor.get("RFdrive");
-        LFdrive.setDirection(DcMotorSimple.Direction.REVERSE);
-        LBdrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        LFdrive.setDirection(DcMotorSimple.Direction.FORWARD);
+        LBdrive.setDirection(DcMotorSimple.Direction.REVERSE);
         RFdrive.setDirection(DcMotorSimple.Direction.FORWARD);
         RBdrive.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -964,9 +976,9 @@ public class AAMainAutoProject extends LinearOpMode {
 
         //red upper:
         bakjedicht.setPosition(0.35);
-        Jewels();
+
         Forward(22, .4);
-        StrafeRight(21, 0.6);
+        StrafeRight(20, 0.6);
         Reverse(7, .6);
         TurnLeft(10, .3);
         bakjeturn.setPosition(0.2);
@@ -982,24 +994,23 @@ public class AAMainAutoProject extends LinearOpMode {
         sleep(750);
         bakjedicht.setPosition(.1);
         sleep(750);
-
-        intakeL.setPower(.9);
-        intakeR.setPower(.9);
-        Forward(20, .6);
+        intakeL.setPower(.7);
+        intakeR.setPower(.7);
+        Forward(17, .6);
         Forward(20, .2);
-        Reverse(40, .6);
+        Reverse(37, .6);
         intakeL.setPower(0);
         intakeR.setPower(0);
         bakjedicht.setPosition(.35);
         sleep(1000);
-        StrafeLeft(20, .5);
-        TurnRight(3, .3);
+        StrafeRight(2, .5);
+        TurnLeft(5, .3);
         bakjeturn.setPosition(0.2);
         sleep(750);
+        Reverse(6, .2);
         bakjedicht.setPosition(0.1);
         sleep(750);
-        Reverse(6, .2);
-        Forward(4, .2);
+        Forward(6, .2);
         bakjeturn.setPosition(.7);
         sleep(1000);
 

@@ -235,7 +235,6 @@ public class AAMainDriveProject extends LinearOpMode {
 
             if (gamepad2.right_bumper && !(gamepad2.right_trigger>0.1))  grabrelic.setPosition(0.13);
             if (gamepad2.left_bumper)   grabrelic.setPosition(0.73);
-
             if (gamepad2.dpad_up)  relicpos = 0.9;
             if (gamepad2.dpad_down)  relicpos =.3;
             if (gamepad2.dpad_right) relicpos = 0.6;
