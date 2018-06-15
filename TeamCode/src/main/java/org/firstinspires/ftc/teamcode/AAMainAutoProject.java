@@ -976,7 +976,6 @@ public class AAMainAutoProject extends LinearOpMode {
 
         //red upper:
         bakjedicht.setPosition(0.35);
-
         Forward(22, .4);
         StrafeRight(20, 0.6);
         Reverse(7, .6);
@@ -1016,40 +1015,44 @@ public class AAMainAutoProject extends LinearOpMode {
 
 
 
-        /*blue upper:
-        bakjedicht.setPosition(0.25);
-        Forward(20, .3);
-        StrafeLeft(20, 0.3);
-        Reverse(15, .3);
-        TurnRight(19, .3);
+        //blue upper:
+        bakjedicht.setPosition(0.35);
+        Forward(22, .4);
+        StrafeLeft(20, 0.6);
+        Reverse(7, .6);
+        TurnRight(10, .3);
         bakjeturn.setPosition(0.2);
         sleep(1000);
         bakjedicht.setPosition(0.1);
         sleep(1000);
-        Reverse(6, 0.2);
-        Forward(3, .2);
+        Reverse(5, 0.3);
+        Forward(7, .3);
         //2nd run
-        StrafeLeft(20, .3);
+        bakjedicht.setPosition(0.35);
+        sleep(750);
         bakjeturn.setPosition(.7);
-        sleep(1000);
-        TurnLeft(4, 0.3);
-        intakeL.setPower(.9);
-        intakeR.setPower(.9);
-        Forward(25, .2);
-        Reverse(30, .2);
+        sleep(750);
+        bakjedicht.setPosition(.1);
+        sleep(750);
+        intakeL.setPower(.7);
+        intakeR.setPower(.7);
+        Forward(17, .6);
+        Forward(20, .2);
+        Reverse(37, .6);
         intakeL.setPower(0);
         intakeR.setPower(0);
-        bakjedicht.setPosition(.25);
+        bakjedicht.setPosition(.35);
         sleep(1000);
-        StrafeRight(10, .3);
+        StrafeLeft(2, .5);
+        TurnRight(5, .3);
         bakjeturn.setPosition(0.2);
-        sleep(1000);
+        sleep(750);
+        Reverse(6, .2);
         bakjedicht.setPosition(0.1);
-        sleep(1000);
-        Reverse(6, 0.2);
-        Forward(4, .2);
+        sleep(750);
+        Forward(6, .2);
         bakjeturn.setPosition(.7);
-        */
+        sleep(1000);
 
 
 
